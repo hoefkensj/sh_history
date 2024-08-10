@@ -1,0 +1,5 @@
+builtin history  -a tmp
+builtin history  -a tmp && builtin history -a tmp
+builtin history  -a tmp && builtin history -a tmp
+builtin history -a tmp
+ls && builtin history -a tmp

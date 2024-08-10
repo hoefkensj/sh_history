@@ -1,0 +1,21 @@
+[project]
+name = "sh_history"
+version = "0.1.0"
+description = "Collect and Manage all your *sh history yourself"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+[project.urls]
+Homepage = "https://github.com/hoefkensj/Clict"
+Issues = "https://github.com/hoefkensj/Clict/issues"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
