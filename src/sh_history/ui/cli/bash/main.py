@@ -1,39 +1,29 @@
 #!/usr/bin/env python
 import click as C
+from sh_history.ui.cli.bash.env import grp_env
+from sh_history.ui.cli.bash.vars import grp_vars
+from sh_history.ui.cli.bash.file import grp_file
+from sh_history.ui.cli.bash.append import cmd_append
+from sh_history.bash.main import show
+
+
 @C.group()
 @C.pass_context
-def entry_point(ctx):
+def bash_entry_point(ctx):
     """	help bash entrypoint"""
-
-    from sh_history.bash_history import env
-    ctx.obj.env.shell='bash'
-    ctx = env.init(ctx)
-
+    pass
 
 
 
 @C.command()
 @C.pass_context
-def env(ctx):
-    """env help"""
-    pass
+def cmd_show(ctx):
+    """print out the full configuration"""
+    ctx.obj=show(ctx.obj)
+    print(repr(ctx.obj))
 
-
-@C.command()
-@C.pass_context
-def start(ctx):
-    """env help"""
-    pass
-
-@C.command()
-@C.pass_context
-def append(ctx):
-    """append help"""
-    pass
-from sh_history.ui.cli.bash import env
-from sh_history.ui.cli.bash import start
-from sh_history.ui.cli.bash import append
-
-entry_point.add_command(env.entry_point,name='env')
-entry_point.add_command(start.entry_point,name='start')
-entry_point.add_command(append.entry_point,name='append')
+bash_entry_point.add_command(cmd_append,name='append')
+bash_entry_point.add_command(grp_env,name='env',)
+bash_entry_point.add_command(grp_file,name='file')
+bash_entry_point.add_command(grp_vars,name='vars')
+bash_entry_point.add_command(cmd_show,name='show')
