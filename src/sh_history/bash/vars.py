@@ -26,11 +26,11 @@ def getvar(C, var):
 			if result:
 				ret=result
 		return ret
-	val=descend(C.env,var)
+	val=descend(C,var)
 	return val
 
 
-def setupvars(C):
+def setup(C):
 	path=Path('/opt/local/sh_history/setup.conf')
 	if path.exists():
 		cfg=Clict_from.config(self={'path': path})
@@ -48,13 +48,13 @@ def setupvars(C):
 
 
 def os_version():
-		ov = '{NAME}-{VERS}'.format(
-		NAME=shell('source /etc/lsb-release && echo {VAR}'.format(VAR='"$DISTRIB_ID"')),
-		VERS=shell('source /etc/os-release && echo {VAR}'.format(VAR='"$VERSION_ID"')))
-		return ov
+	ov = '{NAME}-{VERS}'.format(
+	NAME=shell('source /etc/lsb-release && echo {VAR}'.format(VAR='"$DISTRIB_ID"')),
+	VERS=shell('source /etc/os-release && echo {VAR}'.format(VAR='"$VERSION_ID"')))
+	return ov
 
 
-def vars(C):
+def dynamic(C):
 	#dynamic:
 	C.vars.bootstamp=shell("uptime -s | tr -d '\-: '")
 	C.vars.pid=os.getppid()
@@ -62,4 +62,9 @@ def vars(C):
 	C.vars.user=shell('whoami')
 	C.vars.tty=shell('readlink /proc/self/fd/0')
 	C.vars.pwd=shell('pwd')
+	return C
+
+def vars(C):
+	C=setup(C)
+	C=dynamic(C)
 	return C

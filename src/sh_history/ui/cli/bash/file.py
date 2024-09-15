@@ -11,9 +11,9 @@ from sh_history.tools import shell
 @C.pass_context
 def grp_file(ctx):
 	"""env help"""
-	ctx = env.init(ctx)
-	ctx = env.load(ctx)
-	ctx = env.scope(ctx)
+	ctx.obj = env.init(ctx.obj)
+	ctx.obj = env.load(ctx.obj)
+	ctx.obj = env.scope(ctx.obj)
 	return ctx
 
 @C.command()

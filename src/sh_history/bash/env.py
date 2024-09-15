@@ -5,7 +5,7 @@ from pathlib import Path
 from Clict import Clict_from
 
 import sh_history.bash.vars
-from sh_history.bash.vars import vars,setupvars
+from sh_history.bash.vars import dynamic,setup
 
 
 def config():
@@ -22,8 +22,8 @@ def start(C):
 
 	return C
 def init(C):
-	C=setupvars(C)
-	C= vars(C)
+	C= setup(C)
+	C= dynamic(C)
 	C.sys.conf=config()
 	C.state+=['init']
 	return C
@@ -109,8 +109,9 @@ def write(C):
 
 
 def load(C):
-	cfgfile=C.sys.cfg.paths.FILES.CONFFILE
-	cfgfile=Path(cfgfile.format(**C.env))
+	cfgfile=C.sys.conf.paths.FILES.CONFFILE
+	cfgfile=Path(cfgfile.format(**C.vars))
+	C.sys.load = Clict_from.config(cfgfile)
 	if not cfgfile.exists():
 		breakpoint()
 	C.state+=['load']
@@ -118,23 +119,15 @@ def load(C):
 	return C
 
 def read(C):
-	pid=C.env.pid
-	C.env.red=Clict_from.config(Path(C.sys.conf.paths.FILES.CONFFILE.format(**C.vars)))
-	for ptype in C.env.red:
-		for key in C.env.red[ptype]:
-			C.env.hist[ptype[4:]][key]=Path(C.env.red[ptype][key])
+	pid=C.vars.pid
+	for ptype in C.sys.load:
+		for key in C.sys.load[ptype]:
+			C.env.read[ptype[4:]][key]=Path(C.sys.load[ptype][key])
 			if not key.startswith('BASH'):
-				C.env[key]=Path(C.env.red[ptype][key])
+				C[key]=Path(C.sys.load[ptype][key])
+
 	C.state+=['read']
 	return C
-def scope(C):
-	pid=C.env.pid
-	for ptype in C.env.red:
-		for key in C.env.red[ptype]:
-			skey = key.removeprefix(f'{C.env.shell}_'.upper()).lower()
-			C.scope[skey] = Path(C.env.red[ptype][key])
-	C.state+=['scope']
 
-	return C
 
 

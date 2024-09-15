@@ -7,6 +7,7 @@ from sh_history.bash import env
 def load(C):
 	C = env.init(C)
 	C = env.read(C)
+	C = env.load(C)
 	C = env.scope(C)
 	return C
 

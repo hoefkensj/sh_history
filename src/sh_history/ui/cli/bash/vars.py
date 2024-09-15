@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 #!/usr/bin/env python
 import click as C
-from Clict import Clict,Clict_from
-from pathlib import Path
-from sh_history.bash import env
-import sys,os
-from sh_history.tools import shell
+from sh_history.bash import env,vars
 
 @C.group()
 @C.pass_context
@@ -30,23 +26,10 @@ def sourcefile(ctx):
 @C.command()
 @C.pass_context
 def listvars(ctx):
-    """sourcefile help"""
-    ctx.obj = env.init(ctx.obj)
-    ctx.obj = env.load(ctx.obj)
-    ctx.obj = env.read(ctx.obj)
-    ctx.obj = env.scope(ctx.obj)
+	"""sourcefile help"""
+	ctx.obj = vars.setup(ctx.obj)
+	ctx.obj = vars.dynamic(ctx.obj)
+	C.echo(repr(ctx.obj.vars))
 
-    C.echo(repr(ctx.obj.env))
-
-
-@C.command()
-@C.pass_context
-def cleanvars(ctx):
-    """cleanvars help"""
-    ctx = env.init(ctx)
-    ctx = env.load(ctx)
-    ctx = env.scope(ctx)
-    # C.echo(ctx.obj.env.clean.unset)
-grp_vars.add_command(cleanvars)
 grp_vars.add_command(sourcefile)
 grp_vars.add_command(listvars,name='list')

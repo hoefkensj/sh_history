@@ -85,8 +85,8 @@ CREATE TABLE "record_fields" (
 # 		print(sql_create_statement)
 # meta()
 
-# id=ctx.obj.meta.id
-	# META_ID = int(getoutput(f'cat {getvar(ctx,"sysfull"")} |wc -l'))	+1
+# id=C.obj.meta.id
+	# META_ID = int(getoutput(f'cat {getvar(C,"sysfull"")} |wc -l'))	+1
 	# META_TIME = "$TIMESTAMP"
 	# META_BOOT = "$(bash_bootstamp)"
 	# META_PID = "$$"
